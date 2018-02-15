@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +31,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class CardFragment extends Fragment {
+
     ArrayList<Bikes> listItems = new ArrayList<Bikes>();
 
     private RecyclerView MyRecyclerView;
@@ -174,6 +177,10 @@ public class CardFragment extends Fragment {
 
         //The RecyclerView.ViewHolder class references the
         // ImageView and the TextViews for each view it will be holding.
+        public CardView cardLayoutView;
+        public LinearLayout linearLayoutView;
+        public TextView characterTextView;
+        public TextView viewTextView;
         public TextView titleTextView;
         public ImageView coverImageView;
         public ImageView likeImageView;
@@ -181,14 +188,30 @@ public class CardFragment extends Fragment {
 
         public MyViewHolder(View v) {
             super(v);
+            //cardLayoutView = (CardView) v.findViewById(R.id.disappearingCardViewLayout);
+            linearLayoutView = (LinearLayout) v.findViewById(R.id.disappearingLinearLayout);
+            characterTextView = (TextView) v.findViewById(R.id.characterTitleTextView);
+            viewTextView = (TextView) v.findViewById(R.id.viewMoreTextView);
             titleTextView = (TextView) v.findViewById(R.id.titleTextView);
             coverImageView = (ImageView) v.findViewById(R.id.coverImageView);
             likeImageView = (ImageView) v.findViewById(R.id.likeImageView);
             shareImageView = (ImageView) v.findViewById(R.id.shareImageView);
 
+            viewTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(viewTextView.getText().toString().toLowerCase() == "view"){
+                        viewTextView.setText("close");
+                        linearLayoutView.setVisibility(View.VISIBLE);
+                    } else{
+                        viewTextView.setText("view");
+                        linearLayoutView.setVisibility(View.GONE);
+                    }
+                }
+            });
 
             likeImageView.setTag(R.drawable.ic_stars_black_18dp);
-            likeImageView.setImageResource(R.drawable.amethyst);
+            likeImageView.setImageResource(R.drawable.ic_stars_black_18dp);
             Log.d("D: OutID", (String.valueOf((int) likeImageView.getTag())));
 
             likeImageView.setOnClickListener(new View.OnClickListener() {
@@ -254,6 +277,7 @@ public class CardFragment extends Fragment {
     // the Bikes class.
 
     public class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
+        private int mIsEnabled = -1;
         private ArrayList<Bikes> list;
         public MyAdapter(ArrayList<Bikes> Data){
             list  = Data;
@@ -270,11 +294,22 @@ public class CardFragment extends Fragment {
 
         //Binds the data to the view holder.
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(final MyViewHolder holder, int position) {
+            holder.characterTextView.setText(list.get(position).getmName());
             holder.titleTextView.setText(list.get(position).getmName());
             holder.coverImageView.setImageResource(list.get(position).getImageResourceId());
             holder.coverImageView.setTag(list.get(position).getImageResourceId());
-            holder.likeImageView.setTag(R.drawable.ic_share_white_18dp);
+            holder.likeImageView.setTag(R.drawable.ic_stars_black_18dp);
+            holder.viewTextView.setText("view");
+
+//            if(mIsEnabled == position){
+//                holder.viewTextView.setText("Close");
+//                holder.cardLayoutView.setVisibility(View.VISIBLE);
+//            } else {
+//                holder.viewTextView.setText("view");
+//                holder.cardLayoutView.setVisibility(View.GONE);
+//            }
+
         }
 
         // Returns the size of the data to be displayed.

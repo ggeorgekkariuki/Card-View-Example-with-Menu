@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.design.internal.NavigationMenu;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements CardFragment.OnFragmentInteractionListener {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+    private NavigationMenu mNavigationMenu;
     View.OnClickListener MyOnClickListener;
     public RecyclerView MyRecyclerView;
 
@@ -56,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements CardFragment.OnFr
         if (mToggle.onOptionsItemSelected(item)){
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
